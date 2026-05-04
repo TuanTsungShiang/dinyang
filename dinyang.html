@@ -1,17 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>定陽企業有限公司｜專業線材加工與連接器整合服務</title>
+    <meta
+      name="description"
+      content="定陽企業有限公司提供線材加工、連接器組裝、客製線組、OEM/ODM 與技術支援，服務自動化、半導體、醫療設備與機器人製造產業。"
+    />
+    <!-- css -->
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>定陽企業有限公司｜專業線材加工與連接器整合服務</title>
-  <meta name="description" content="定陽企業有限公司提供線材加工、連接器組裝、客製線組、OEM/ODM 與技術支援，服務自動化、半導體、醫療設備與機器人製造產業。" />
-  <!-- css -->
-  <link rel="stylesheet" href="css/main.css" />
-</head>
-
-<body>
-  <main class="page">
+  <body>
+    <main class="page">
+      <!-- @partial:start partials/header.html  →  Blade: @include('partials.header') -->
       <!-- Laravel CMS: Header / Navigation / LINE CTA -->
       <header class="header">
         <div class="header-inner">
@@ -24,10 +27,17 @@
             <a href="#applications">應用領域</a>
             <a href="#news">最新消息</a>
             <a href="#contact">聯絡我們</a>
-            <a class="btn btn-line" href="https://line.me/R/ti/p/@dinyang" target="_blank" rel="noopener">LINE 即時詢價</a>
+            <a
+              class="btn btn-line"
+              href="https://line.me/R/ti/p/@dinyang"
+              target="_blank"
+              rel="noopener"
+              >LINE 即時詢價</a
+            >
           </nav>
         </div>
       </header>
+      <!-- @partial:end partials/header.html -->
 
       <!-- Laravel CMS: Banner 模組 -->
       <section class="hero" id="top">
@@ -37,7 +47,13 @@
           <p>深耕產業多年，提供客製化線材、連接器、OEM / ODM 與技術支援</p>
           <div class="hero-actions">
             <a class="btn btn-outline" href="#contact">立即詢價 →</a>
-            <a class="btn btn-line" href="https://line.me/R/ti/p/@dinyang" target="_blank" rel="noopener">加入 LINE</a>
+            <a
+              class="btn btn-line"
+              href="https://line.me/R/ti/p/@dinyang"
+              target="_blank"
+              rel="noopener"
+              >加入 LINE</a
+            >
           </div>
         </div>
       </section>
@@ -47,7 +63,9 @@
         <div class="container intro-grid">
           <div class="intro-copy">
             <h2>關於定陽</h2>
-            <p>定陽企業有限公司深耕線材加工與連接器整合領域，累積豐富的製造經驗與技術能量。我們以品質為核心，結合客製化服務與快速交期能力，協助客戶提升產品競爭力，成為您值得信賴的長期合作夥伴。</p>
+            <p>
+              定陽企業有限公司深耕線材加工與連接器整合領域，累積豐富的製造經驗與技術能量。我們以品質為核心，結合客製化服務與快速交期能力，協助客戶提升產品競爭力，成為您值得信賴的長期合作夥伴。
+            </p>
           </div>
           <div class="feature-grid">
             <article class="card">
@@ -204,7 +222,9 @@
         <div class="container">
           <div class="section-title">
             <h2>最新消息</h2>
-            <p>發布公司動態、展會資訊與技術文章，提升網站活躍度與搜尋能見度。</p>
+            <p>
+              發布公司動態、展會資訊與技術文章，提升網站活躍度與搜尋能見度。
+            </p>
           </div>
           <div class="news-grid">
             <article class="card news-card">
@@ -212,7 +232,9 @@
               <div class="news-body">
                 <h3>定陽企業新廠落成啟用</h3>
                 <time>2024 / 05 / 15</time>
-                <p>為提升產能與服務品質，我們的新廠正式落成，提供更完善的生產與檢驗設備。</p>
+                <p>
+                  為提升產能與服務品質，我們的新廠正式落成，提供更完善的生產與檢驗設備。
+                </p>
                 <a href="#">閱讀更多 →</a>
               </div>
             </article>
@@ -238,47 +260,93 @@
         </div>
       </section>
 
+      <!-- @partial:start partials/contact.html  →  Blade: @include('partials.contact') -->
       <!-- Laravel: InquiryController + LINE Message API / LINE Notify 替代方案 -->
       <section class="contact-section" id="contact">
         <div class="container contact-grid">
           <div>
-            <div class="section-title" style="text-align:left;margin-left:0;">
+            <div class="section-title" style="text-align: left; margin-left: 0">
               <h2>聯絡我們 / 詢價表單</h2>
-              <p style="margin-left:0;">歡迎填寫以下表單，告訴我們您的需求，我們將盡快與您聯繫。</p>
+              <p style="margin-left: 0">
+                歡迎填寫以下表單，告訴我們您的需求，我們將盡快與您聯繫。
+              </p>
             </div>
-            <form class="form-panel" action="/inquiries" method="post" enctype="multipart/form-data">
+            <form
+              class="form-panel"
+              action="/inquiries"
+              method="post"
+              enctype="multipart/form-data"
+            >
               <div class="form-grid">
                 <div class="field">
                   <label for="company">公司名稱 *</label>
-                  <input id="company" name="company_name" type="text" placeholder="請輸入公司名稱" required />
+                  <input
+                    id="company"
+                    name="company_name"
+                    type="text"
+                    placeholder="請輸入公司名稱"
+                    required
+                  />
                 </div>
                 <div class="field">
                   <label for="name">聯絡人 *</label>
-                  <input id="name" name="contact_name" type="text" placeholder="請輸入聯絡人姓名" required />
+                  <input
+                    id="name"
+                    name="contact_name"
+                    type="text"
+                    placeholder="請輸入聯絡人姓名"
+                    required
+                  />
                 </div>
                 <div class="field">
                   <label for="phone">電話 *</label>
-                  <input id="phone" name="phone" type="tel" placeholder="請輸入聯絡電話" required />
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="請輸入聯絡電話"
+                    required
+                  />
                 </div>
                 <div class="field">
                   <label for="email">Email *</label>
-                  <input id="email" name="email" type="email" placeholder="請輸入 Email" required />
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="請輸入 Email"
+                    required
+                  />
                 </div>
                 <div class="field full">
                   <label for="message">需求說明 *</label>
-                  <textarea id="message" name="message" placeholder="請詳細描述您的產品需求、規格、數量與應用環境…" required></textarea>
+                  <textarea
+                    id="message"
+                    name="message"
+                    placeholder="請詳細描述您的產品需求、規格、數量與應用環境…"
+                    required
+                  ></textarea>
                 </div>
                 <div class="field full">
                   <label for="attachment">檔案上傳</label>
                   <div class="upload-box">
-                    <input id="attachment" name="attachment" type="file"
-                      accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" />
-                    <div>支援 PDF、JPG、PNG、Word、Excel，單檔建議 10MB 以內。</div>
+                    <input
+                      id="attachment"
+                      name="attachment"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
+                    />
+                    <div>
+                      支援 PDF、JPG、PNG、Word、Excel，單檔建議 10MB 以內。
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-footer">
-                <label class="privacy"><input type="checkbox" required /> 我已閱讀並同意 <a href="#">隱私權政策</a></label>
+                <label class="privacy"
+                  ><input type="checkbox" required /> 我已閱讀並同意
+                  <a href="#">隱私權政策</a></label
+                >
                 <button class="btn btn-blue" type="submit">送出詢價</button>
               </div>
             </form>
@@ -286,12 +354,27 @@
           <aside class="line-card">
             <h3>加入 LINE<br />快速洽詢</h3>
             <p>掃描 QR Code 加入好友<br />專人為您服務！</p>
-            <div class="qr"><img src="img/M_gainfriends_2dbarcodes_BW.png" alt="掃描 QR Code 加入 LINE" width="210" height="210" /></div>
-            <a class="btn btn-line" href="https://line.me/R/ti/p/@458psncu" target="_blank" rel="noopener">立即加入 LINE</a>
+            <div class="qr">
+              <img
+                src="img/M_gainfriends_2dbarcodes_BW.png"
+                alt="掃描 QR Code 加入 LINE"
+                width="210"
+                height="210"
+              />
+            </div>
+            <a
+              class="btn btn-line"
+              href="https://line.me/R/ti/p/@458psncu"
+              target="_blank"
+              rel="noopener"
+              >立即加入 LINE</a
+            >
           </aside>
         </div>
       </section>
+      <!-- @partial:end partials/contact.html -->
 
+      <!-- @partial:start partials/footer.html  →  Blade: @include('partials.footer') -->
       <footer class="footer">
         <div class="container">
           <div class="footer-grid">
@@ -312,27 +395,13 @@
               <a href="#contact">聯絡我們</a>
             </div>
           </div>
-          <div class="copyright">© 2024 定陽企業有限公司 Dinyang Enterprise Co., Ltd. All Rights Reserved.</div>
+          <div class="copyright">
+            © 2024 定陽企業有限公司 Dinyang Enterprise Co., Ltd. All Rights
+            Reserved.
+          </div>
         </div>
       </footer>
-
-      <!-- <div class="module-strip">
-        <div class="container module-grid">
-          <div class="module-box">
-            <h3>Laravel 後台可更新模組</h3>
-            <div class="module-items">
-              <span>🖼 Banner</span><span>▦ 產品分類</span><span>📰 最新消息</span><span>☎ 聯絡資訊</span><span>📩 詢價表單</span>
-            </div>
-          </div>
-          <div class="module-box">
-            <h3>整合功能</h3>
-            <div class="module-items">
-              <span>💬 LINE 導流</span><span>✉ 表單通知</span><span>👥 後台管理</span><span>📎 檔案上傳</span>
-            </div>
-          </div>
-        </div>
-      </div> -->
+      <!-- @partial:end partials/footer.html -->
     </main>
-</body>
-
+  </body>
 </html>

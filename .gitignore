@@ -1,0 +1,5 @@
+# Claude Code 本地設定（個人權限/環境，不入版控）
+.claude/
+
+# 安裝過程的 log
+laravel-install.log
