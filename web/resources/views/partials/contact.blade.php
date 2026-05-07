@@ -94,7 +94,7 @@
       <p>掃描 QR Code 加入好友<br />專人為您服務！</p>
       <div class="qr">
         <img
-          src="/img/M_gainfriends_2dbarcodes_BW.png"
+          src="/img/line_qrcode_for_dev_001.png"
           alt="掃描 QR Code 加入 LINE"
           width="210"
           height="210"
