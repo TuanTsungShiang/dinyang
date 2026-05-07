@@ -11,7 +11,7 @@
         <a class="btn btn-outline" href="#contact">立即詢價 →</a>
         <a
           class="btn btn-line"
-          href="https://line.me/R/ti/p/@@dinyang"
+          href="https://line.me/R/ti/p/@@503xumnz"
           target="_blank"
           rel="noopener"
         >

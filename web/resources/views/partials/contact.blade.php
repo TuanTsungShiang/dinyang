@@ -102,7 +102,7 @@
       </div>
       <a
         class="btn btn-line"
-        href="https://line.me/R/ti/p/@@458psncu"
+        href="https://line.me/R/ti/p/@@503xumnz"
         target="_blank"
         rel="noopener"
       >

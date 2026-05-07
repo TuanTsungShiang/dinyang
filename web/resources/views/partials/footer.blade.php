@@ -8,7 +8,7 @@
         <span>📍 桃園市龜山區文化一路250號</span>
         <span>☎ 03-328-1234</span>
         <span>✉ service@dinyang.com.tw</span>
-        <span>💬 LINE ID：@@dinyang</span>
+        <span>💬 LINE ID：@@503xumnz</span>
       </div>
       <div class="footer-links">
         <a href="#about">關於我們</a>

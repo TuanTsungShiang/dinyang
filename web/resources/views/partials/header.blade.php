@@ -23,7 +23,7 @@
       <a href="#contact">聯絡我們</a>
       <a
         class="btn btn-line"
-        href="https://line.me/R/ti/p/@@dinyang"
+        href="https://line.me/R/ti/p/@@503xumnz"
         target="_blank"
         rel="noopener"
       >
