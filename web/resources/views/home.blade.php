@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-  <!-- Laravel CMS: Banner 模組 -->
+  <!-- Laravel CMS: Banner 模組（hero-media 之後可改為輪播容器） -->
   <section class="hero" id="top">
     <div class="hero-content">
       <div class="eyebrow">B2B 線材加工｜連接器整合｜OEM / ODM</div>
       <h1>專業線材加工與<br />連接器整合服務</h1>
-      <p>深耕產業多年，提供客製化線材、連接器、OEM / ODM 與技術支援</p>
+      <p>深耕產業多年，提供客製化線材、連接器、</br>OEM / ODM 與技術支援</p>
       <div class="hero-actions">
         <a class="btn btn-outline" href="#contact">立即詢價 →</a>
         <a
@@ -14,9 +14,14 @@
           href="https://line.me/R/ti/p/@@dinyang"
           target="_blank"
           rel="noopener"
-          >加入 LINE</a
         >
+          <img src="/img/icon/line_bubble.png" alt="" />
+          加入 LINE
+        </a>
       </div>
+    </div>
+    <div class="hero-media">
+      <img src="/img/Server_rack_blue_cables.png" alt="網路機櫃藍色乙太線" />
     </div>
   </section>
 
@@ -31,17 +36,23 @@
       </div>
       <div class="feature-grid">
         <article class="card">
-          <div class="icon">✪</div>
+          <div class="icon">
+            <img src="/img/icon/icon_experience.svg" alt="" />
+          </div>
           <h3>多年產業經驗</h3>
           <p>深耕線材與連接器產業多年，熟悉各產業需求。</p>
         </article>
         <article class="card">
-          <div class="icon">🛠</div>
+          <div class="icon">
+            <img src="/img/icon/icon_custom_processing.svg" alt="" />
+          </div>
           <h3>客製化加工</h3>
           <p>依客戶需求提供客製化線材與連接器解決方案。</p>
         </article>
         <article class="card">
-          <div class="icon">🚚</div>
+          <div class="icon">
+            <img src="/img/icon/icon_fast_delivery.svg" alt="" />
+          </div>
           <h3>快速交期支援</h3>
           <p>完善生產流程與庫存管理，快速回應客戶交期需求。</p>
         </article>

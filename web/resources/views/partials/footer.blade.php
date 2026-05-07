@@ -2,7 +2,7 @@
   <div class="container">
     <div class="footer-grid">
       <div class="brand">
-        <img src="/img/logo_long.png" alt="定陽企業有限公司" />
+        <img src="/img/logo_long_rb_w.png" alt="定陽企業有限公司" />
       </div>
       <div class="footer-info">
         <span>📍 桃園市龜山區文化一路250號</span>

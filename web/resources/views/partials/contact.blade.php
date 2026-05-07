@@ -105,8 +105,10 @@
         href="https://line.me/R/ti/p/@@458psncu"
         target="_blank"
         rel="noopener"
-        >立即加入 LINE</a
       >
+        <img src="/img/icon/line_bubble.png" alt="" />
+        立即加入 LINE
+      </a>
     </aside>
   </div>
 </section>
