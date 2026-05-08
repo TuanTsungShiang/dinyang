@@ -22,10 +22,8 @@
 | `cta_secondary_label` | `varchar(100)` | YES | NULL | 副 CTA 文字（例：「加入 LINE」） |
 | `cta_secondary_url` | `varchar(500)` | YES | NULL | 副 CTA 連結 |
 | `cta_secondary_icon` | `varchar(500)` | YES | NULL | 副 CTA 圖示（例：`/img/icon/line_bubble.png`） |
-| `is_active` | `boolean` | NO | true | 上下架旗標 |
+| `is_active` | `boolean` | NO | true | 上下架旗標（管理員手動切換） |
 | `sort_order` | `int` | NO | 0 | 輪播順序（1, 2, 3...） |
-| `starts_at` | `timestamp` | YES | NULL | 排程上架時間（null = 立即） |
-| `ends_at` | `timestamp` | YES | NULL | 排程下架時間（null = 永久） |
 | `created_at` | `timestamp` | NO | auto | |
 | `updated_at` | `timestamp` | NO | auto | |
 
@@ -59,17 +57,17 @@ linear-gradient(90deg, rgba(6, 43, 95, 0.92) 0%, rgba(7, 59, 131, 0.7) 30%, ...)
 
 ---
 
-## 排程顯示邏輯
+## 顯示邏輯
 
 前台 query：
 
 ```sql
 SELECT * FROM hero_slides
 WHERE is_active = true
-  AND (starts_at IS NULL OR starts_at <= NOW())
-  AND (ends_at IS NULL OR ends_at >= NOW())
 ORDER BY sort_order ASC;
 ```
+
+> 不做排程上下架。需要預告 / 排程的場景由管理員手動切 `is_active`。
 
 ---
 

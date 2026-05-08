@@ -7,47 +7,42 @@
 
 ## 文件索引
 
-| 檔案 | 內容 |
-|---|---|
-| [README.md](README.md) | 本檔：總覽、命名慣例、ER 圖、Filament 設定注意事項 |
-| [products.md](products.md) | `products` + `product_categories` + `product_related`（自參照 M:M） |
-| [news.md](news.md) | `news`（最新消息：公司消息 / 展會資訊 / 技術文章） |
-| [inquiries.md](inquiries.md) | `inquiries`（詢價表單提交，含處理狀態） |
-| [hero_slides.md](hero_slides.md) | `hero_slides`（首頁 hero 輪播圖） |
+| 檔案 | 內容 | 涵蓋資料表 |
+|---|---|---|
+| [README.md](README.md) | 本檔：總覽、命名慣例、ER 圖、Filament 設定注意事項、Decisions Log | — |
+| [products.md](products.md) | Products + Categories + 應用領域 | `product_categories`、`products`、`product_related`、`application_areas`、`application_product` |
+| [news.md](news.md) | News 與分類 | `news_categories`、`news` |
+| [inquiries.md](inquiries.md) | 詢價表單記錄 + 附件 | `inquiries`、`inquiry_attachments` |
+| [hero_slides.md](hero_slides.md) | 首頁輪播圖 | `hero_slides` |
+
+**v1 總計**：**10 個新表 + 既有 `users` 表新增 `is_admin` boolean**
 
 ---
 
 ## ER 概觀（文字版）
 
 ```
-┌─────────────────────┐
-│ product_categories  │ 6 種分類（線材加工 / 連接器組裝 / ...）
-└──────────┬──────────┘
-           │ 1:N
-           ▼
-┌─────────────────────┐         ┌──────────────────┐
-│      products       │ ◄─M:M─► │ product_related  │（自參照中介表）
-└──────────┬──────────┘         └──────────────────┘
-           │ 1:N (optional)
-           ▼
-┌─────────────────────┐
-│     inquiries       │ ─── (FK handled_by) ──► users
-└─────────────────────┘                            ▲
-                                                   │
-┌─────────────────────┐                            │
-│        news         │                            │（admin auth）
-└─────────────────────┘                            │
-                                                   │
-┌─────────────────────┐                            │
-│     hero_slides     │                            │
-└─────────────────────┘                            │
-                                                   │
-┌─────────────────────┐                            │
-│       users         │ ◄──── 既有，加 is_admin ────┘
-└─────────────────────┘
+product_categories ──1:N──┐
+                          ▼
+                       products ──┬──M:M─→ products (product_related 自參照)
+                          │       │
+                          │       └──M:M─→ application_areas (application_product)
+                          │ 1:N (optional)
+                          ▼
+                      inquiries ──1:N──→ inquiry_attachments
+                          │
+                          │ N:1 (handled_by)
+                          ▼
+                        users ◄── 既有，加 is_admin
+
+news_categories ──1:N──→ news
+
+hero_slides (standalone)
 ```
 
-`news`、`hero_slides`、`product_categories` 為獨立實體（無外部 FK）。
+獨立實體：`hero_slides`、`product_categories`、`news_categories`、`application_areas`、`users`
+
+關聯實體：`products`、`news`、`inquiries`、`inquiry_attachments`、`product_related`、`application_product`
 
 ---
 
@@ -55,7 +50,9 @@
 
 ### 資料表
 - 一律 **snake_case 複數**：`products`、`product_categories`、`hero_slides`
-- 中介表用兩個實體單數 + `_` 連接，按字母序：`product_related`（自參照例外，見 products.md）
+- 中介表：
+  - 一般 M:M 用兩個實體單數 + `_` 連接，按字母序：`application_product`
+  - 自參照例外：`product_related`（避免 `product_product` 的怪名）
 
 ### 欄位
 - snake_case：`category_id`、`published_at`、`is_active`
@@ -77,7 +74,9 @@
 | `created_at` | `timestamp` | Laravel 預設 |
 | `updated_at` | `timestamp` | Laravel 預設 |
 
-軟刪除（`deleted_at`）：products、news、inquiries 啟用；categories、hero_slides 不啟用（量小、直接硬刪）。
+軟刪除（`deleted_at`）：`products`、`news`、`inquiries` 啟用；`product_categories`、`news_categories`、`application_areas`、`hero_slides` 不啟用（量小、直接硬刪）。
+
+中介表（`product_related`、`application_product`、`inquiry_attachments`）只有 `created_at`，無 `updated_at`、無軟刪。
 
 ---
 
@@ -90,10 +89,12 @@
 | Slug | `varchar(200)`，UNIQUE | URL-friendly |
 | 短描述 / 摘要 | `varchar(500)` | 卡片用 |
 | 長內容 / 內文 | `text` | TINYTEXT 不夠 |
-| JSON 結構（規格、特色、應用場景） | `json` | MySQL 8 原生支援 |
+| Rich text 內文 | `longtext` | 會嵌圖片 base64 / 大段 HTML |
+| JSON 結構（規格、特色） | `json` | MySQL 8 原生支援 |
 | 列舉狀態 | `varchar(20)` + check | 不用 ENUM（schema 變更困難） |
 | 金額 | `decimal(12, 2)` | 避免 float 精度問題（暫時用不到） |
 | 圖檔路徑 | `varchar(500)` | 存 storage/app/public 相對路徑 |
+| 檔案大小 | `bigint unsigned` | bytes，可容納超大檔（理論上） |
 
 ---
 
@@ -140,12 +141,24 @@
 - 編輯型靜態頁（about、application 等改 DB 驅動）
 - Inquiry 自動發送通知（Email / LINE Notify）
 - 全文檢索（Scout + Meilisearch）
+- News 標籤篩選（拆 `news_tags` + `news_tag_pivot`）
+- Hero slides 排程上下架（v1 只用 `is_active`）
 
 ---
 
-## Open Questions（待確認）
+## Decisions Log
 
-1. **Inquiries 的 attachment 多檔還是單檔？** 目前表單欄位只允許單檔，schema 也是單檔（`attachment_path`）。若改多檔需拆 `inquiry_attachments` 表。
-2. **Hero slides 上下架排程** 用 `starts_at` / `ends_at` 還是手動切 `is_active`？v1 兩個都做，可選。
-3. **News 分類**：用 enum 字串（`company` / `event` / `tech`）還是獨立 `news_categories` 表？v1 用 enum 字串（量少且穩定）。
-4. **Products 的「應用場景」連結到哪裡？** 目前只是 JSON 描述。若應用領域要做成可篩選頁面，需要 `application_areas` 表 + M:M。**v1 不做**，先存 JSON。
+記錄 schema 設計過程中的關鍵決策，避免未來忘記為什麼這樣做。
+
+### 2026-05-08（v1 初版）
+
+| 決策 | 選擇 | 為什麼 |
+|---|---|---|
+| Inquiries 附件 | **多檔架構（拆 `inquiry_attachments` 子表）** | v1 表單仍只允許單檔，但 schema 已就位多檔。未來改前台表單為多檔上傳時不用 migration，只動程式碼 |
+| Hero slides 上下架 | **只用 `is_active` 手動切**（不做 `starts_at` / `ends_at` 排程） | 接案 v1 範圍實用即可；要排程預告再加欄位（migration 不會痛） |
+| News 分類 | **獨立 `news_categories` 表** | 客戶未來可能自己加類別（例：獲獎紀錄、媒體報導），不想再回頭做 migration |
+| Products 應用場景 | **獨立 `application_areas` 表 + M:M 中介** | 未來要做「按應用領域篩選產品」的列表頁，預留結構；4 種應用領域寫死在 enum 等於白做 |
+| Admin 角色管理 | **`users` 加 `is_admin` boolean**（不引入 Spatie/Permissions） | v1 用不到細粒度權限；多角色再加 Spatie |
+| 圖片管理 | **Laravel Storage + Filament `FileUpload`**（不引入 Spatie Media Library） | v1 單檔欄位夠用，Spatie Media Library 額外複雜度沒效益 |
+| 軟刪除範圍 | **products / news / inquiries 啟用，分類表不啟用** | 主資料需要恢復能力；分類量小、誤刪頻率低、軟刪反而增加 query 複雜度 |
+| Slug 策略 | **手動指定英文 slug**（不自動由中文 transliterate） | 中文 URL 雖能 work 但 SEO 體驗差；強迫管理員思考 SEO friendly slug |

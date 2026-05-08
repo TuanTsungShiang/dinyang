@@ -1,6 +1,11 @@
-# Products + Categories Schema
+# Products + Categories + Application Areas Schema
 
-涵蓋 `product_categories`、`products`、以及自參照中介表 `product_related`。
+涵蓋：
+- `product_categories`（產品分類，6 種固定但可擴充）
+- `products`（主產品表）
+- `product_related`（自參照 M:M「相關產品」中介表）
+- `application_areas`（應用領域，獨立表便於前台篩選）
+- `application_product`（產品 ↔ 應用領域 M:M 中介表）
 
 ---
 
@@ -61,7 +66,6 @@
 | `long_description` | `text` | YES | NULL | 內頁主要介紹段落 |
 | `features` | `json` | YES | NULL | 產品特色陣列（見下方結構） |
 | `specifications` | `json` | YES | NULL | 規格表（key-value 陣列） |
-| `applications` | `json` | YES | NULL | 應用場景陣列 |
 | `min_order_qty` | `varchar(50)` | YES | NULL | 最小訂購量（保留字串以容納「樣品 1 pcs；量產 50 pcs 起」這種多值） |
 | `lead_time_days` | `varchar(50)` | YES | NULL | 樣品 / 交期描述 |
 | `icon` | `varchar(100)` | YES | NULL | 列表卡片 icon（emoji 或 path） |
@@ -75,6 +79,8 @@
 | `created_at` | `timestamp` | NO | auto | |
 | `updated_at` | `timestamp` | NO | auto | |
 | `deleted_at` | `timestamp` | YES | NULL | 軟刪除 |
+
+> 「應用場景」改為獨立 `application_areas` 表 + M:M 中介表，主表不再有 `applications` JSON。
 
 ### Indexes
 
@@ -106,18 +112,6 @@
 ]
 ```
 
-#### `applications`（應用場景）
-```json
-[
-  {
-    "icon": "🦾",
-    "title": "工業機器手臂",
-    "description": "六軸機器人本體配線與外掛工具線束整合"
-  },
-  ...
-]
-```
-
 #### `gallery`
 ```json
 [
@@ -132,6 +126,7 @@
 - `N:1 → product_categories`
 - `1:N ← inquiries`（產品內頁送出的詢價會記 `inquiries.product_id`）
 - `M:M ↔ products`（透過 `product_related` 自參照）
+- `M:M ↔ application_areas`（透過 `application_product`）
 
 ---
 
@@ -164,12 +159,78 @@
 
 ---
 
+## 4. `application_areas`
+
+應用領域。對應前台「應用領域」區塊，目前 4 種（自動化設備 / 半導體設備 / 醫療機械 / 機器人製造）但可擴充（航太、車用、能源等）。
+
+獨立成表的理由：未來要做「按應用領域篩選產品」的列表頁（例：`/products?application=robotics` 列出所有適用機器人的產品）。
+
+### 欄位
+
+| 欄位 | 型別 | Nullable | 預設 | 說明 |
+|---|---|---|---|---|
+| `id` | `bigint unsigned` | NO | auto | PK |
+| `name` | `varchar(100)` | NO | - | 顯示名稱（例：「半導體設備」） |
+| `slug` | `varchar(100)` | NO | - | URL slug，UNIQUE（例：`semiconductor`） |
+| `description` | `text` | YES | NULL | 應用領域說明 |
+| `icon` | `varchar(100)` | YES | NULL | 列表 icon（emoji 或 SVG path） |
+| `cover_image` | `varchar(500)` | YES | NULL | 封面圖（應用領域頁 hero 用） |
+| `sort_order` | `int` | NO | 0 | 顯示順序 |
+| `is_active` | `boolean` | NO | true | 上下架 |
+| `created_at` | `timestamp` | NO | auto | |
+| `updated_at` | `timestamp` | NO | auto | |
+
+### Indexes
+
+- `UNIQUE (slug)`
+- `INDEX (is_active, sort_order)`
+
+### 種子資料（migration seeder）
+
+```
+1. 自動化設備    automation       🏭   ord=10
+2. 半導體設備    semiconductor    ◈    ord=20
+3. 醫療機械      medical          ✚    ord=30
+4. 機器人製造    robotics         ⚙    ord=40
+```
+
+---
+
+## 5. `application_product`（M:M 中介表）
+
+產品 ↔ 應用領域。一個產品可適用多個領域（例：M12 連接器同時適用自動化、半導體），一個領域有多個產品。
+
+### 欄位
+
+| 欄位 | 型別 | Nullable | 預設 | 說明 |
+|---|---|---|---|---|
+| `application_area_id` | `bigint unsigned` | NO | - | FK → `application_areas.id` |
+| `product_id` | `bigint unsigned` | NO | - | FK → `products.id` |
+| `note` | `varchar(500)` | YES | NULL | 該產品在此領域的特定說明（例：「適用 6 軸機器人本體配線」） |
+| `sort_order` | `int` | NO | 0 | 應用領域頁中此產品的顯示順序 |
+| `created_at` | `timestamp` | NO | auto | |
+
+### Indexes
+
+- `PRIMARY KEY (application_area_id, product_id)`
+- `INDEX (product_id)`（反向查詢）
+
+### Filament 注意
+
+- Product Resource 內 `BelongsToMany` field 編輯該產品適用哪些 application_areas
+- 反向：ApplicationAreaResource 內可用 `RelationManager` 顯示該領域有哪些 products
+- `note` 欄位透過 pivot 編輯（Filament 用 `pivotData()`）
+
+---
+
 ## 種子資料規模參考
 
 從現有靜態 HTML（`product-detail.html`、`products.html`）抓取：
 
-- **6 個分類**（已列在 `product_categories` 種子）
+- **6 個產品分類**（已列在 `product_categories` 種子）
+- **4 個應用領域**（已列在 `application_areas` 種子）
 - **12 個產品**（對應現有 12 張卡片）
 - **每個產品 ~3 個相關產品**（共 36 筆 `product_related`）
+- **每個產品平均 2 個應用領域**（共 ~24 筆 `application_product`）
 
 種子資料於 [seeders.md](./seeders.md)（待寫）整理，避免本檔過長。
