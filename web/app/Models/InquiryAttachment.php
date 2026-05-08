@@ -4,31 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class NewsCategory extends Model
+class InquiryAttachment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'color',
+        'inquiry_id',
+        'path',
+        'original_name',
+        'mime_type',
+        'size_bytes',
         'sort_order',
-        'is_active',
     ];
 
     protected function casts(): array
     {
         return [
-            'is_active' => 'boolean',
+            'size_bytes' => 'integer',
             'sort_order' => 'integer',
         ];
     }
 
-    public function news(): HasMany
+    public function inquiry(): BelongsTo
     {
-        return $this->hasMany(News::class, 'category_id');
+        return $this->belongsTo(Inquiry::class);
     }
 }
