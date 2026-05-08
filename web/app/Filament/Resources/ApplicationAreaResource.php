@@ -17,7 +17,10 @@ class ApplicationAreaResource extends Resource
 {
     protected static ?string $model = ApplicationArea::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
+    protected static ?string $navigationGroup = '產品管理';
+    protected static ?string $navigationLabel = '應用領域';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

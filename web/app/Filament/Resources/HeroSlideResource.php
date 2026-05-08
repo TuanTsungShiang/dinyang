@@ -17,7 +17,10 @@ class HeroSlideResource extends Resource
 {
     protected static ?string $model = HeroSlide::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
+    protected static ?string $navigationGroup = '外觀設定';
+    protected static ?string $navigationLabel = 'Hero 輪播';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

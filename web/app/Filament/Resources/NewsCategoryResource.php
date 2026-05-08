@@ -17,7 +17,10 @@ class NewsCategoryResource extends Resource
 {
     protected static ?string $model = NewsCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationGroup = '內容管理';
+    protected static ?string $navigationLabel = '消息分類';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
