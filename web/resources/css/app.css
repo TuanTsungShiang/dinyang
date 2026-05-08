@@ -1772,22 +1772,24 @@ textarea:focus {
 /* CTA / Inquiry Bar */
 .cta-strip,
 .inquiry-bar {
-  background: linear-gradient(135deg, var(--blue-950), var(--blue-800));
+  background: linear-gradient(180deg, #d4dee9 0%, #e6eef8 40%, #f5f9ff 100%);
+  border-top: 1px solid #c8d4e6;
   padding: 52px 0;
   text-align: center;
-  color: white;
+  color: var(--text);
 }
 
 .cta-strip h2,
 .inquiry-bar h2 {
   margin: 0 0 10px;
   font-size: clamp(22px, 3vw, 30px);
+  color: var(--blue-950);
 }
 
 .cta-strip p,
 .inquiry-bar p {
   margin: 0 0 28px;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--muted);
   font-weight: 600;
 }
 
@@ -1797,6 +1799,15 @@ textarea:focus {
   gap: 14px;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* btn-outline 預設是白底深底用，CTA 改淺色後需覆寫成「白底藍字」 */
+.cta-strip .btn-outline,
+.inquiry-bar .btn-outline {
+  background: white;
+  color: var(--blue-800);
+  border: 1px solid var(--blue-700);
+  box-shadow: 0 12px 28px rgba(15, 78, 162, 0.12);
 }
 
 /* ── Responsive (product pages) ── */

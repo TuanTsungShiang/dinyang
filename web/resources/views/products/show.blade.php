@@ -257,26 +257,6 @@
     </div>
   </section>
 
-  {{-- Inquiry Bar --}}
-  <div class="inquiry-bar">
-    <div class="container">
-      <h2>需要客製化規格或批量報價？</h2>
-      <p>提供應用環境、線長、芯數與連接器需求，我們將在 1 個工作日內回覆。</p>
-      <div class="btn-group">
-        <a class="btn btn-outline" href="/#contact">填寫詢價表單</a>
-        <a
-          class="btn btn-line"
-          href="https://line.me/R/ti/p/@@503xumnz"
-          target="_blank"
-          rel="noopener"
-        >
-          <img src="/img/icon/line_bubble.png" alt="" />
-          LINE 即時詢價
-        </a>
-      </div>
-    </div>
-  </div>
-
   {{-- Related Products --}}
   <section>
     <div class="container">
@@ -315,5 +295,25 @@
       </div>
     </div>
   </section>
+
+  {{-- Inquiry Bar --}}
+  <div class="inquiry-bar">
+    <div class="container">
+      <h2>需要客製化規格或批量報價？</h2>
+      <p>提供應用環境、線長、芯數與連接器需求，我們將在 1 個工作日內回覆。</p>
+      <div class="btn-group">
+        <a class="btn btn-outline" href="/#contact">填寫詢價表單</a>
+        <a
+          class="btn btn-line"
+          href="https://line.me/R/ti/p/@@503xumnz"
+          target="_blank"
+          rel="noopener"
+        >
+          <img src="/img/icon/line_bubble.png" alt="" />
+          LINE 即時詢價
+        </a>
+      </div>
+    </div>
+  </div>
 
 @endsection

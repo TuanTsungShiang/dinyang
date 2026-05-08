@@ -18,8 +18,6 @@
 
       @yield('content')
 
-      @include('partials.contact')
-
       @include('partials.footer')
     </main>
     @stack('scripts')
