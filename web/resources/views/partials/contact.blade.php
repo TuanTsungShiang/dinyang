@@ -1,4 +1,3 @@
-<!-- Laravel: InquiryController + LINE Message API / LINE Notify 替代方案 -->
 <section class="contact-section" id="contact">
   <div class="container contact-grid">
     <div>
@@ -8,9 +7,26 @@
           歡迎填寫以下表單，告訴我們您的需求，我們將盡快與您聯繫。
         </p>
       </div>
+
+      @if(session('inquiry_success'))
+        <div class="form-success" role="alert">
+          ✅ {{ session('inquiry_success') }}
+        </div>
+      @endif
+
+      @if($errors->any())
+        <div class="form-error" role="alert">
+          <ul>
+            @foreach($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
+
       <form
         class="form-panel"
-        action="/inquiries"
+        action="{{ route('inquiries.store') }}"
         method="post"
         enctype="multipart/form-data"
       >
