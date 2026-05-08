@@ -12,19 +12,29 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] Deploy started" >> "$LOG"
 
 cd "$APP_DIR"
 
-# 1. git pull
+# 1. git pull（先記住舊的 HEAD，之後用來 diff）
 echo "[deploy] git pull origin develop..." | tee -a "$LOG"
+OLD_HEAD=$(git rev-parse HEAD)
 git pull origin develop >> "$LOG" 2>&1
+NEW_HEAD=$(git rev-parse HEAD)
 
-# 2. composer install
-echo "[deploy] composer install..." | tee -a "$LOG"
-docker compose exec -T php \
-    composer install --no-dev --optimize-autoloader --no-interaction >> "$LOG" 2>&1
+# 2. composer install（只在 composer.json / composer.lock 有變動時才跑）
+if git diff "$OLD_HEAD" "$NEW_HEAD" --name-only | grep -qE '^web/composer\.(json|lock)$'; then
+    echo "[deploy] composer changed → composer install..." | tee -a "$LOG"
+    docker compose exec -T php \
+        composer install --no-dev --optimize-autoloader --no-interaction >> "$LOG" 2>&1
+else
+    echo "[deploy] composer 無異動，跳過" | tee -a "$LOG"
+fi
 
-# 3. npm build（強制重建，避免 entrypoint 因 public/build 已存在而跳過）
-echo "[deploy] npm build..." | tee -a "$LOG"
-docker compose exec -T php \
-    sh -c "npm ci && npm run build" >> "$LOG" 2>&1
+# 3. npm build（只在前端相關檔案有變動時才跑）
+FRONTEND_PATTERN='^web/(resources/|package\.json|package-lock\.json|vite\.config)'
+if git diff "$OLD_HEAD" "$NEW_HEAD" --name-only | grep -qE "$FRONTEND_PATTERN"; then
+    echo "[deploy] 前端檔案有異動 → npm build..." | tee -a "$LOG"
+    docker compose exec -T php sh -c "npm ci && npm run build" >> "$LOG" 2>&1
+else
+    echo "[deploy] 前端無異動，跳過 npm build" | tee -a "$LOG"
+fi
 
 # 4. DB migration
 echo "[deploy] migrate..." | tee -a "$LOG"
@@ -36,8 +46,13 @@ docker compose exec -T php php artisan config:cache >> "$LOG" 2>&1
 docker compose exec -T php php artisan route:cache  >> "$LOG" 2>&1
 docker compose exec -T php php artisan view:cache   >> "$LOG" 2>&1
 
-# 6. reload nginx（config 若有異動才需要，restart 輕量快速）
-echo "[deploy] reload nginx..." | tee -a "$LOG"
-docker compose restart nginx >> "$LOG" 2>&1
+# 6. nginx reload（只在 nginx config 有異動時）
+if git diff "$OLD_HEAD" "$NEW_HEAD" --name-only | grep -qE '^docker/nginx/'; then
+    echo "[deploy] nginx config 有異動 → restart nginx..." | tee -a "$LOG"
+    docker compose restart nginx >> "$LOG" 2>&1
+else
+    echo "[deploy] nginx config 無異動，跳過" | tee -a "$LOG"
+fi
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Deploy finished ✅" | tee -a "$LOG"
+
