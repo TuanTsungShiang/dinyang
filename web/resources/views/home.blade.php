@@ -171,7 +171,7 @@
               <h3>{{ $item->title }}</h3>
               <time>{{ $item->published_at?->format('Y / m / d') }}</time>
               <p>{{ $item->excerpt }}</p>
-              <a href="#">閱讀更多 →</a>
+              <a href="{{ route('news.show', $item->slug) }}">閱讀更多 →</a>
             </div>
           </article>
         @empty
