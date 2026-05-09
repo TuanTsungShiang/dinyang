@@ -16,7 +16,9 @@
     <main class="page">
       @include('partials.header')
 
-      @yield('content')
+      <div class="page-body">
+        @yield('content')
+      </div>
 
       @include('partials.footer')
     </main>

@@ -1,33 +1,47 @@
 @extends('layouts.app')
 
 @section('content')
-  <!-- Hero -->
-  <section class="hero" id="top">
-    <div class="hero-content">
-      <div class="eyebrow">{{ $hero?->eyebrow ?? 'B2B 線材加工｜連接器整合｜OEM / ODM' }}</div>
-      <h1>{!! nl2br(e($hero?->title ?? '專業線材加工與連接器整合服務')) !!}</h1>
-      <p>{{ $hero?->subtitle ?? '深耕產業多年，提供客製化線材、連接器、OEM / ODM 與技術支援' }}</p>
-      <div class="hero-actions">
-        <a class="btn btn-outline" href="{{ $hero?->cta_primary_url ?? '/#contact' }}">
-          {{ $hero?->cta_primary_label ?? '立即詢價 →' }}
-        </a>
-        <a class="btn btn-line"
-           href="{{ $hero?->cta_secondary_url ?? 'https://line.me/R/ti/p/@503xumnz' }}"
-           target="_blank" rel="noopener">
-          @if($hero?->cta_secondary_icon)
-            <img src="{{ $hero->cta_secondary_icon }}" alt="" />
-          @else
-            <img src="/img/icon/line_bubble.png" alt="" />
-          @endif
-          {{ $hero?->cta_secondary_label ?? '加入 LINE' }}
-        </a>
+  <!-- Hero 輪播 -->
+  @php $slides = $heroSlides->isNotEmpty() ? $heroSlides : collect([null]); @endphp
+  <div class="hero-slider" id="hero-slider">
+    @foreach($slides as $i => $slide)
+      <section class="hero hero-slide {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}">
+        <div class="hero-content">
+          <div class="eyebrow">{{ $slide?->eyebrow ?? 'B2B 線材加工｜連接器整合｜OEM / ODM' }}</div>
+          <h1>{!! nl2br(e($slide?->title ?? '專業線材加工與連接器整合服務')) !!}</h1>
+          <p>{{ $slide?->subtitle ?? '深耕產業多年，提供客製化線材、連接器、OEM / ODM 與技術支援' }}</p>
+          <div class="hero-actions">
+            <a class="btn btn-outline" href="{{ $slide?->cta_primary_url ?? '/#contact' }}">
+              {{ $slide?->cta_primary_label ?? '立即詢價 →' }}
+            </a>
+            <a class="btn btn-line"
+               href="{{ $slide?->cta_secondary_url ?? 'https://line.me/R/ti/p/@503xumnz' }}"
+               target="_blank" rel="noopener">
+              <img src="{{ $slide?->cta_secondary_icon ?? '/img/icon/line_bubble.png' }}" alt="" />
+              {{ $slide?->cta_secondary_label ?? '加入 LINE' }}
+            </a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img src="{{ $slide?->image_path ? asset('storage/' . $slide->image_path) : '/img/Server_rack_blue_cables.png' }}"
+               alt="{{ $slide?->title ?? '定陽企業' }}" />
+        </div>
+      </section>
+    @endforeach
+
+    @if($slides->count() > 1)
+      {{-- Prev / Next --}}
+      <button class="hero-arrow hero-prev" id="hero-prev" aria-label="上一張">&#8249;</button>
+      <button class="hero-arrow hero-next" id="hero-next" aria-label="下一張">&#8250;</button>
+
+      {{-- Dots --}}
+      <div class="hero-dots" id="hero-dots">
+        @foreach($slides as $i => $slide)
+          <button class="hero-dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}" aria-label="第 {{ $i+1 }} 張"></button>
+        @endforeach
       </div>
-    </div>
-    <div class="hero-media">
-      <img src="/{{ $hero?->image_path ?? 'img/Server_rack_blue_cables.png' }}"
-           alt="網路機櫃藍色乙太線" />
-    </div>
-  </section>
+    @endif
+  </div>
 
   <!-- 公司介紹 -->
   <section id="about">
@@ -58,7 +72,7 @@
     </div>
   </section>
 
-  <!-- 產品分類 -->
+  <!-- 產品分類（DB） -->
   <section id="products">
     <div class="container">
       <div class="section-title">
@@ -66,30 +80,18 @@
         <p>提供從線材加工、連接器組裝到客製線組量產的一站式支援。</p>
       </div>
       <div class="product-grid">
-        <article class="card product-card">
-          <div class="icon">🔌</div>
-          <div><h3>線材加工</h3><p>多樣線材裁切、剝線、壓接與成型加工服務。</p></div>
-        </article>
-        <article class="card product-card">
-          <div class="icon">▣</div>
-          <div><h3>連接器組裝</h3><p>各式連接器組裝、壓接與測試的一站式服務。</p></div>
-        </article>
-        <article class="card product-card">
-          <div class="icon">〽</div>
-          <div><h3>客製線組</h3><p>客製化線組設計與製造，滿足各式應用需求。</p></div>
-        </article>
-        <article class="card product-card">
-          <div class="icon">🤖</div>
-          <div><h3>自動化設備用線</h3><p>高耐用、高柔性線材，適用自動化設備應用。</p></div>
-        </article>
-        <article class="card product-card">
-          <div class="icon">▤</div>
-          <div><h3>醫療設備配線</h3><p>符合醫療等級標準，提供可靠的配線解決方案。</p></div>
-        </article>
-        <article class="card product-card">
-          <div class="icon">⚙</div>
-          <div><h3>OEM / ODM 服務</h3><p>從設計開發到量產製造，提供完整 OEM / ODM 服務。</p></div>
-        </article>
+        @foreach($productCategories as $cat)
+          <a class="card product-card" href="{{ route('products.index') }}#{{ $cat->slug }}"
+             style="text-decoration:none;">
+            <div class="icon" style="background:{{ $cat->color_band }}22; color:{{ $cat->color_band }}">
+              {{ mb_substr($cat->name, 0, 1) }}
+            </div>
+            <div>
+              <h3>{{ $cat->name }}</h3>
+              <p>{{ $cat->description }}</p>
+            </div>
+          </a>
+        @endforeach
       </div>
     </div>
   </section>
