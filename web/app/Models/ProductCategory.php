@@ -15,6 +15,7 @@ class ProductCategory extends Model
         'slug',
         'description',
         'color_band',
+        'image',
         'sort_order',
         'is_active',
     ];

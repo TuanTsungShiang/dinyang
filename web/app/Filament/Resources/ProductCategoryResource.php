@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductCategoryResource\Pages;
-use App\Filament\Resources\ProductCategoryResource\RelationManagers;
 use App\Models\ProductCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductCategoryResource extends Resource
 {
@@ -32,7 +29,12 @@ class ProductCategoryResource extends Resource
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('color_band'),
+                Forms\Components\TextInput::make('color_band')->label('色帶顏色（hex）'),
+                Forms\Components\FileUpload::make('image')
+                    ->label('分類圖片')
+                    ->image()
+                    ->directory('categories')
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('sort_order')
                     ->required()
                     ->numeric()

@@ -23,22 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Hero Slider ──
   const slider = document.getElementById('hero-slider');
   if (slider) {
+    const track  = document.getElementById('hero-track');
     const slides = slider.querySelectorAll('.hero-slide');
     const dots   = slider.querySelectorAll('.hero-dot');
     let current  = 0;
     let timer;
 
     function goTo(idx) {
-      slides[current].classList.remove('active');
       dots[current]?.classList.remove('active');
       current = (idx + slides.length) % slides.length;
-      slides[current].classList.add('active');
+      track.style.transform = `translateX(-${current * 100}%)`;
       dots[current]?.classList.add('active');
     }
 
     function startTimer() {
       clearInterval(timer);
-      timer = setInterval(() => goTo(current + 1), 5000);
+      timer = setInterval(() => goTo(current + 1), 20000);
     }
 
     document.getElementById('hero-prev')?.addEventListener('click', () => { goTo(current - 1); startTimer(); });

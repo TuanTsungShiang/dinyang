@@ -4,6 +4,7 @@
   <!-- Hero 輪播 -->
   @php $slides = $heroSlides->isNotEmpty() ? $heroSlides : collect([null]); @endphp
   <div class="hero-slider" id="hero-slider">
+    <div class="hero-slider-track" id="hero-track">
     @foreach($slides as $i => $slide)
       <section class="hero hero-slide {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}">
         <div class="hero-content">
@@ -28,6 +29,8 @@
         </div>
       </section>
     @endforeach
+
+    </div>{{-- /hero-slider-track --}}
 
     @if($slides->count() > 1)
       {{-- Prev / Next --}}
@@ -79,14 +82,19 @@
         <h2>產品服務</h2>
         <p>提供從線材加工、連接器組裝到客製線組量產的一站式支援。</p>
       </div>
-      <div class="product-grid">
+      <div class="cat-grid">
         @foreach($productCategories as $cat)
-          <a class="card product-card" href="{{ route('products.index') }}#{{ $cat->slug }}"
-             style="text-decoration:none;">
-            <div class="icon" style="background:{{ $cat->color_band }}22; color:{{ $cat->color_band }}">
-              {{ mb_substr($cat->name, 0, 1) }}
+          <a class="cat-card" href="{{ route('products.index') }}">
+            <div class="cat-img" style="border-color: {{ $cat->color_band }}44">
+              @if($cat->image)
+                <img src="{{ asset('storage/' . $cat->image) }}" alt="{{ $cat->name }}" />
+              @else
+                <div class="cat-img-placeholder" style="background:{{ $cat->color_band }}22; color:{{ $cat->color_band }}">
+                  {{ mb_substr($cat->name, 0, 1) }}
+                </div>
+              @endif
             </div>
-            <div>
+            <div class="cat-body">
               <h3>{{ $cat->name }}</h3>
               <p>{{ $cat->description }}</p>
             </div>
