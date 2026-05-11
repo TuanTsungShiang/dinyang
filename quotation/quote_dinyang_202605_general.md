@@ -63,7 +63,7 @@
 
 | 項目 | 規格 | 月費（NT$） |
 |------|------|------------|
-| GCP VM | e2-small（2 vCPU ／ 2GB RAM ／ 30GB SSD） | 700 – 900 |
+| GOOGLE 雲端主機 | e2-small（2 vCPU ／ 2GB RAM ／ 30GB SSD） | 700 – 900 |
 | GCP 流量 | 每月前 100GB 免費，超過約 NT$ 3–4 ／ GB | 依流量 |
 | Cloudflare | Free Plan（WAF ＋ DDoS ＋ CDN） | 0 |
 | LINE Official Account | 免費方案（每月 200 則 Push 通知） | 0 |
