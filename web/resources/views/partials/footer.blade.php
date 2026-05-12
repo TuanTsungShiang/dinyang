@@ -11,7 +11,7 @@
         <a href="mailto:service@dinyang.com.tw" class="footer-contact-link">✉ service@dinyang.com.tw</a>
         <a href="https://line.me/R/ti/p/@503xumnz" target="_blank" rel="noopener"
            class="footer-contact-link footer-line-link">
-          <img src="/img/icon/line_bubble.png" alt="LINE" style="height:16px;vertical-align:middle;margin-right:4px;" />
+          <img src="/img/icon/line_bubble.png" alt="LINE" style="height:18px;width:18px;flex-shrink:0;" />
           LINE ID：@503xumnz
         </a>
       </div>

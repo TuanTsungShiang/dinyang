@@ -1193,6 +1193,13 @@ textarea:focus {
   font-size: 15px;
 }
 
+.footer-info span,
+.footer-contact-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
 .footer-contact-link {
   color: rgba(255, 255, 255, 0.88);
   text-decoration: none;
