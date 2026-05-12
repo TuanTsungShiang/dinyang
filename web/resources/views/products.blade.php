@@ -39,8 +39,7 @@
                  style="{{ $product->thumbnail ? '' : 'background-color:' . ($product->category?->color_band ?? '#0b4ea2') }}">
               @if($product->thumbnail)
                 <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                     alt="{{ $product->name }}"
-                     style="width:100%;height:100%;object-fit:cover;display:block;" />
+                     alt="{{ $product->name }}" />
               @else
                 <span class="product-thumb-icon">{{ $product->icon }}</span>
               @endif

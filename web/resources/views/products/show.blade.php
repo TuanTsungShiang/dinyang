@@ -26,18 +26,37 @@
 
         {{-- Left: Gallery --}}
         <div class="product-gallery">
-          @if($product->thumbnail)
-            <div class="product-main-img">
-              <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                   alt="{{ $product->name }}" />
-            </div>
-          @else
-            <div class="product-main-img">{{ $product->icon }}</div>
-          @endif
+          @php
+            $hasThumbnail = !empty($product->thumbnail);
+            $galleryImages = array_values(array_filter($product->gallery ?? []));
+            $allImages = $hasThumbnail
+              ? array_merge([asset('storage/' . $product->thumbnail)], array_map(fn($g) => asset('storage/' . $g), $galleryImages))
+              : [];
+          @endphp
 
-          @if(!empty($product->gallery))
+          {{-- 主圖 --}}
+          <div class="product-main-img {{ $hasThumbnail ? 'has-image' : '' }}" id="main-img-wrap">
+            @if($hasThumbnail)
+              <img id="main-img" src="{{ asset('storage/' . $product->thumbnail) }}"
+                   alt="{{ $product->name }}" />
+            @else
+              {{ $product->icon }}
+            @endif
+          </div>
+
+          {{-- 縮圖列：thumbnail + gallery --}}
+          @if(count($allImages) > 1)
+            <div class="product-thumb-row" id="thumb-row">
+              @foreach($allImages as $i => $src)
+                <div class="product-thumb-item {{ $i === 0 ? 'active' : '' }}"
+                     data-src="{{ $src }}" style="cursor:pointer;">
+                  <img src="{{ $src }}" alt="" />
+                </div>
+              @endforeach
+            </div>
+          @elseif(!empty($galleryImages))
             <div class="product-thumb-row">
-              @foreach($product->gallery as $img)
+              @foreach($galleryImages as $img)
                 <div class="product-thumb-item">
                   <img src="{{ asset('storage/' . $img) }}" alt="" />
                 </div>
@@ -210,3 +229,20 @@
   </div>
 
 @endsection
+
+@push('scripts')
+<script>
+  const mainImg  = document.getElementById('main-img');
+  const thumbRow = document.getElementById('thumb-row');
+
+  if (mainImg && thumbRow) {
+    thumbRow.querySelectorAll('.product-thumb-item').forEach(item => {
+      item.addEventListener('click', () => {
+        mainImg.src = item.dataset.src;
+        thumbRow.querySelectorAll('.product-thumb-item').forEach(t => t.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+  }
+</script>
+@endpush
