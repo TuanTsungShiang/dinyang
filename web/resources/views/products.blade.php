@@ -20,13 +20,15 @@
   </section>
 
   {{-- Filter + Product Grid --}}
+  @php $activeCatSlug = request('cat'); @endphp
   <section>
     <div class="container">
 
       <div class="filter-wrap" role="group" aria-label="產品分類篩選">
-        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn {{ !$activeCatSlug ? 'active' : '' }}" data-filter="all">全部</button>
         @foreach($categories as $category)
-          <button class="filter-btn" data-filter="{{ $category->name }}" data-slug="{{ $category->slug }}">
+          <button class="filter-btn {{ $activeCatSlug === $category->slug ? 'active' : '' }}"
+                  data-filter="{{ $category->name }}" data-slug="{{ $category->slug }}">
             {{ $category->name }}
           </button>
         @endforeach
@@ -34,7 +36,8 @@
 
       <div class="product-list-grid" id="product-grid">
         @forelse($products as $product)
-          <article class="product-list-card" data-category="{{ $product->category?->name }}">
+          <article class="product-list-card" data-category="{{ $product->category?->name }}"
+                   @if($activeCatSlug && $product->category?->slug !== $activeCatSlug) hidden @endif>
             <div class="product-thumb"
                  style="{{ $product->thumbnail ? '' : 'background-color:' . ($product->category?->color_band ?? '#0b4ea2') }}">
               @if($product->thumbnail)
