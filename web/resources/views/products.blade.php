@@ -80,13 +80,14 @@
 
 @push('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', () => {
   const btns  = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.product-list-card');
 
   function applyFilter(filter) {
     btns.forEach(b => b.classList.remove('active'));
-    const active = [...btns].find(b => b.dataset.filter === filter || (filter === 'all' && b.dataset.filter === 'all'));
-    (active || btns[0]).classList.add('active');
+    const active = [...btns].find(b => b.dataset.filter === filter);
+    (active ?? btns[0]).classList.add('active');
     cards.forEach(card => {
       if (filter === 'all' || card.dataset.category === filter) {
         card.removeAttribute('hidden');
@@ -106,5 +107,6 @@
     const matched = [...btns].find(b => b.dataset.slug === catSlug);
     if (matched) applyFilter(matched.dataset.filter);
   }
+});
 </script>
 @endpush
