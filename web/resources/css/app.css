@@ -1834,7 +1834,7 @@ textarea:focus {
   display: block;
 }
 
-.product-main-img::after {
+.product-main-img:not(.has-image)::after {
   content: "";
   position: absolute;
   inset: 28px;
