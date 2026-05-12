@@ -36,9 +36,15 @@
         @forelse($products as $product)
           <article class="product-list-card" data-category="{{ $product->category?->name }}">
             <div class="product-thumb"
-                 style="background-color: {{ $product->category?->color_band ?? '#0b4ea2' }}">
+                 style="{{ $product->thumbnail ? '' : 'background-color:' . ($product->category?->color_band ?? '#0b4ea2') }}">
+              @if($product->thumbnail)
+                <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                     alt="{{ $product->name }}"
+                     style="width:100%;height:100%;object-fit:cover;display:block;" />
+              @else
+                <span class="product-thumb-icon">{{ $product->icon }}</span>
+              @endif
               <span class="product-cat-badge">{{ $product->category?->name }}</span>
-              <span class="product-thumb-icon">{{ $product->icon }}</span>
             </div>
             <div class="product-card-body">
               <h3>{{ $product->name }}</h3>
