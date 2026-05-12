@@ -45,51 +45,25 @@
     </div>
   </section>
 
-  {{-- 職缺列表 --}}
+  {{-- 求職平台 --}}
   <section style="background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%);">
     <div class="container">
       <div class="section-title">
-        <h2>開放職缺</h2>
-        <p>歡迎有志之士加入我們的團隊</p>
+        <h2>目前開放職缺</h2>
+        <p>點擊下方平台查看最新職缺並投遞履歷</p>
       </div>
-
-      @forelse($jobs as $job)
-        <article class="job-card">
-          <div class="job-header">
-            <div>
-              <h3 class="job-title">{{ $job->title }}</h3>
-              <div class="job-meta">
-                @if($job->department)
-                  <span>📂 {{ $job->department }}</span>
-                @endif
-                <span>📍 {{ $job->location }}</span>
-                <span class="job-type-badge job-type-{{ $job->type }}">
-                  {{ $job->getTypeLabel() }}
-                </span>
-              </div>
-            </div>
-            <a href="/#contact" class="btn btn-blue job-apply-btn">立即應徵</a>
-          </div>
-
-          @if($job->description)
-            <div class="job-section">
-              <h4>工作內容</h4>
-              <div class="job-text">{!! nl2br(e($job->description)) !!}</div>
-            </div>
-          @endif
-
-          @if($job->requirements)
-            <div class="job-section">
-              <h4>應徵條件</h4>
-              <div class="job-text">{!! nl2br(e($job->requirements)) !!}</div>
-            </div>
-          @endif
-        </article>
-      @empty
-        <div class="careers-empty">
-          <p>目前暫無開放職缺，歡迎將履歷寄至 <a href="mailto:service@dinyang.com.tw">service@dinyang.com.tw</a>，我們會在有職缺時主動聯繫。</p>
-        </div>
-      @endforelse
+      <div class="job-platform-grid">
+        <a href="https://www.104.com.tw/company/arpyjfk#intro"
+           target="_blank" rel="noopener" class="job-platform-card">
+          <img src="/img/104.png" alt="104 人力銀行" />
+          <span>104 人力銀行</span>
+        </a>
+        <a href="https://www.yes123.com.tw/wk_index/comp_info.asp?p_id=20120319092331_23444012"
+           target="_blank" rel="noopener" class="job-platform-card">
+          <img src="/img/123.png" alt="yes123 求職網" />
+          <span>yes123 求職網</span>
+        </a>
+      </div>
     </div>
   </section>
 
