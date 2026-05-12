@@ -146,7 +146,7 @@
       <div class="application-grid">
         @foreach($applicationAreas as $area)
           <article class="card app-card">
-            <div class="app-image">
+            <div class="app-image {{ $area->cover_image ? 'has-image' : '' }}">
               @if($area->cover_image)
                 <img src="{{ asset('storage/' . $area->cover_image) }}"
                      alt="{{ $area->name }}"

@@ -934,7 +934,7 @@ section:nth-of-type(even) {
   position: relative;
 }
 
-.app-image::after {
+.app-image:not(.has-image)::after {
   content: "";
   position: absolute;
   inset: 22px;
