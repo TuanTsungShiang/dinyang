@@ -136,7 +136,7 @@
     </div>
   </section>
 
-  <!-- 應用領域 -->
+  <!-- 應用領域（DB） -->
   <section id="applications">
     <div class="container">
       <div class="section-title">
@@ -144,22 +144,22 @@
         <p>支援多種產業設備線材與連接器需求。</p>
       </div>
       <div class="application-grid">
-        <article class="card app-card">
-          <div class="app-image"></div>
-          <div class="app-body"><div class="icon">🏭</div><h3>自動化設備</h3><p>工業自動化控制系統與設備配線應用。</p></div>
-        </article>
-        <article class="card app-card">
-          <div class="app-image"></div>
-          <div class="app-body"><div class="icon">◈</div><h3>半導體設備</h3><p>高精度、高可靠度配線，適用半導體製程設備。</p></div>
-        </article>
-        <article class="card app-card">
-          <div class="app-image"></div>
-          <div class="app-body"><div class="icon">✚</div><h3>醫療機械</h3><p>符合醫療標準的配線，確保設備穩定與安全。</p></div>
-        </article>
-        <article class="card app-card">
-          <div class="app-image"></div>
-          <div class="app-body"><div class="icon">⚙</div><h3>機器人製造</h3><p>機器人本體與周邊設備線材整合應用。</p></div>
-        </article>
+        @foreach($applicationAreas as $area)
+          <article class="card app-card">
+            <div class="app-image">
+              @if($area->cover_image)
+                <img src="{{ asset('storage/' . $area->cover_image) }}"
+                     alt="{{ $area->name }}"
+                     style="width:100%;height:100%;object-fit:cover;display:block;" />
+              @endif
+            </div>
+            <div class="app-body">
+              <div class="icon">{{ $area->icon }}</div>
+              <h3>{{ $area->name }}</h3>
+              <p>{{ $area->description }}</p>
+            </div>
+          </article>
+        @endforeach
       </div>
     </div>
   </section>
