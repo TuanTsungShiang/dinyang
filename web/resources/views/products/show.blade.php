@@ -27,14 +27,11 @@
         {{-- Left: Gallery --}}
         <div class="product-gallery">
           @php
-            $hasThumbnail = !empty($product->thumbnail);
+            $hasThumbnail  = !empty($product->thumbnail);
             $galleryImages = array_values(array_filter($product->gallery ?? []));
-            $allImages = $hasThumbnail
-              ? array_merge([asset('storage/' . $product->thumbnail)], array_map(fn($g) => asset('storage/' . $g), $galleryImages))
-              : [];
           @endphp
 
-          {{-- 主圖 --}}
+          {{-- 主圖（從 thumbnail 開始）--}}
           <div class="product-main-img {{ $hasThumbnail ? 'has-image' : '' }}" id="main-img-wrap">
             @if($hasThumbnail)
               <img id="main-img" src="{{ asset('storage/' . $product->thumbnail) }}"
@@ -44,20 +41,12 @@
             @endif
           </div>
 
-          {{-- 縮圖列：thumbnail + gallery --}}
-          @if(count($allImages) > 1)
+          {{-- 縮圖列：gallery 圖點擊切換主圖 --}}
+          @if(!empty($galleryImages))
             <div class="product-thumb-row" id="thumb-row">
-              @foreach($allImages as $i => $src)
+              @foreach($galleryImages as $i => $img)
                 <div class="product-thumb-item {{ $i === 0 ? 'active' : '' }}"
-                     data-src="{{ $src }}" style="cursor:pointer;">
-                  <img src="{{ $src }}" alt="" />
-                </div>
-              @endforeach
-            </div>
-          @elseif(!empty($galleryImages))
-            <div class="product-thumb-row">
-              @foreach($galleryImages as $img)
-                <div class="product-thumb-item">
+                     data-src="{{ asset('storage/' . $img) }}" style="cursor:pointer;">
                   <img src="{{ asset('storage/' . $img) }}" alt="" />
                 </div>
               @endforeach
