@@ -970,6 +970,8 @@ section:nth-of-type(even) {
 
 .news-image {
   min-height: 170px;
+  position: relative;
+  overflow: hidden;
   background:
     linear-gradient(135deg, rgba(6, 43, 95, 0.88), rgba(15, 95, 194, 0.44)),
     linear-gradient(45deg, #dbeafe, #ffffff);

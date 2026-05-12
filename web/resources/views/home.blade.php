@@ -175,6 +175,11 @@
         @forelse($news as $item)
           <article class="card news-card">
             <div class="news-image">
+              @if($item->cover_image)
+                <img src="{{ asset('storage/' . $item->cover_image) }}"
+                     alt="{{ $item->title }}"
+                     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+              @endif
               <span class="tag">{{ $item->category?->name }}</span>
             </div>
             <div class="news-body">
