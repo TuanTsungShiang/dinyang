@@ -1193,6 +1193,21 @@ textarea:focus {
   font-size: 15px;
 }
 
+.footer-contact-link {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  transition: color 0.18s;
+}
+
+.footer-contact-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.footer-line-link:hover {
+  color: #06c755;
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;
