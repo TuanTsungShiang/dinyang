@@ -58,14 +58,14 @@
   {{-- CTA Strip --}}
   <div class="cta-strip">
     <div class="container">
-      <h2>找不到符合需求的規格？</h2>
-      <p>告訴我們您的應用環境與需求，我們提供客製化方案與快速報價。</p>
+      <h2>找不到符合需求的線材規格？</h2>
+      <p>提供您的應用環境、線材長度、接頭型號或設備需求，<br>我們將協助評估可行方案。</p>
       <div class="btn-group">
-        <a class="btn btn-outline" href="/#contact">填寫詢價表單</a>
+        <a class="btn btn-outline" href="/#contact">送出需求</a>
         <a class="btn btn-line" href="https://line.me/R/ti/p/@503xumnz"
            target="_blank" rel="noopener">
           <img src="/img/icon/line_bubble.png" alt="" />
-          LINE 即時詢價
+          LINE 技術洽詢
         </a>
       </div>
     </div>

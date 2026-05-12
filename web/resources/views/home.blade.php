@@ -13,7 +13,7 @@
           <p>{{ $slide?->subtitle ?? '深耕產業多年，提供客製化線材、連接器、OEM / ODM 與技術支援' }}</p>
           <div class="hero-actions">
             <a class="btn btn-outline" href="{{ $slide?->cta_primary_url ?? '/#contact' }}">
-              {{ $slide?->cta_primary_label ?? '立即詢價 →' }}
+              {{ $slide?->cta_primary_label ?? '了解更多 →' }}
             </a>
             <a class="btn btn-line"
                href="{{ $slide?->cta_secondary_url ?? 'https://line.me/R/ti/p/@503xumnz' }}"
