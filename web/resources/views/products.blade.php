@@ -95,6 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
         card.setAttribute('hidden', '');
       }
     });
+
+    // 同步更新 URL（不重新載入頁面）
+    const btn = [...btns].find(b => b.dataset.filter === filter);
+    const slug = btn?.dataset.slug;
+    const url = slug ? `?cat=${slug}` : location.pathname;
+    history.replaceState(null, '', url);
   }
 
   btns.forEach(btn => {
