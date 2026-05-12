@@ -84,7 +84,7 @@
       </div>
       <div class="cat-grid">
         @foreach($productCategories as $cat)
-          <a class="cat-card" href="{{ route('products.index') }}">
+          <a class="cat-card" href="{{ route('products.index') }}?cat={{ $cat->slug }}">
             <div class="cat-img" style="border-color: {{ $cat->color_band }}44">
               @if($cat->image)
                 <img src="{{ asset('storage/' . $cat->image) }}" alt="{{ $cat->name }}" />

@@ -26,7 +26,7 @@
       <div class="filter-wrap" role="group" aria-label="產品分類篩選">
         <button class="filter-btn active" data-filter="all">全部</button>
         @foreach($categories as $category)
-          <button class="filter-btn" data-filter="{{ $category->name }}">
+          <button class="filter-btn" data-filter="{{ $category->name }}" data-slug="{{ $category->slug }}">
             {{ $category->name }}
           </button>
         @endforeach
@@ -83,20 +83,28 @@
   const btns  = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.product-list-card');
 
-  btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filter = btn.dataset.filter;
-      cards.forEach(card => {
-        if (filter === 'all' || card.dataset.category === filter) {
-          card.removeAttribute('hidden');
-        } else {
-          card.setAttribute('hidden', '');
-        }
-      });
+  function applyFilter(filter) {
+    btns.forEach(b => b.classList.remove('active'));
+    const active = [...btns].find(b => b.dataset.filter === filter || (filter === 'all' && b.dataset.filter === 'all'));
+    (active || btns[0]).classList.add('active');
+    cards.forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.removeAttribute('hidden');
+      } else {
+        card.setAttribute('hidden', '');
+      }
     });
+  }
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
   });
+
+  // 從首頁帶過來的 ?cat=slug 自動套用
+  const catSlug = new URLSearchParams(location.search).get('cat');
+  if (catSlug) {
+    const matched = [...btns].find(b => b.dataset.slug === catSlug);
+    if (matched) applyFilter(matched.dataset.filter);
+  }
 </script>
 @endpush
